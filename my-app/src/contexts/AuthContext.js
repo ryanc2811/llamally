@@ -1,33 +1,38 @@
-import React, { createContext, useState, useEffect } from "react";
-import { authService } from "../services/AuthService";
-
+import React, { createContext, useState, useEffect, useContext } from "react";
+import AuthService from "../services/AuthService";
+import {firebaseAuth} from "../services/AuthService";
 export const AuthContext = createContext();
 
+export const useAuth=()=>{
+    const auth = useContext(AuthContext);
+    
+    return auth;
+};
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    authService.onAuthStateChanged((user) => {
+    firebaseAuth.onAuthStateChanged((user) => {
       setCurrentUser(user);
       setLoading(false);
     });
   }, []);
 
   const login = async (email, password) => {
-    await authService.login(email, password);
+    await AuthService.login(email, password);
   };
 
   const logout = async () => {
-    await authService.logout();
+    await AuthService.logout();
   };
 
   const signup = async (email, password) => {
-    await authService.signup(email, password);
+    await AuthService.signup(email, password);
   };
 
   const resetPassword = async (email) => {
-    await authService.resetPassword(email);
+    await AuthService.resetPassword(email);
   };
 
   const updateEmail = async (email) => {

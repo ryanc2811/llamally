@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { getPublishedCourses } from '../services/CourseService';
+import CourseService from '../services/CourseService';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const publishedCourses = await getPublishedCourses();
+      const publishedCourses = await CourseService.getPublishedCourses();
       setCourses(publishedCourses);
     };
 
@@ -21,7 +21,7 @@ const Home = () => {
       {courses.map((course) => (
         <div key={course.id}>
           <Link to={`/courses/${course.id}`}>
-            <h3>{course.title}</h3>
+            <h3>{course.name}</h3>
           </Link>
           <p>{course.description}</p>
         </div>

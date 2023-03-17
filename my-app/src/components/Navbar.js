@@ -1,8 +1,16 @@
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-function Navbar() {
+const Navbar = () => {
   const { currentUser, logout } = useAuth();
+
+  const handleLogout = async () => {
+    try {
+      await logout();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
 
   return (
     <nav>
@@ -10,16 +18,13 @@ function Navbar() {
         <li>
           <Link to="/">Home</Link>
         </li>
-        <li>
-          <Link to="/courses">Courses</Link>
-        </li>
         {currentUser ? (
           <>
             <li>
               <Link to="/profile">Profile</Link>
             </li>
             <li>
-              <button onClick={logout}>Logout</button>
+              <button onClick={handleLogout}>Logout</button>
             </li>
           </>
         ) : (
@@ -30,6 +35,6 @@ function Navbar() {
       </ul>
     </nav>
   );
-}
+};
 
 export default Navbar;

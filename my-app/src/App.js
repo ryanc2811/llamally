@@ -1,8 +1,8 @@
 import logo from './logo.svg';
 import './styles/App.css';
 import React from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import firebase  from './utils/firebase';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import {app}from './utils/firebase';
 
 //import components
 import Navbar from './components/Navbar';
@@ -20,15 +20,15 @@ function App() {
       <div className="App">
         <Navbar />
         <div className="container">
-          <Switch>
-            <Route exact path="/" component={Home} />
-            <Route path="/login" component={Login} />
-            <Route path="/register" component={Register} />
-            <Route path="/profile" component={Profile} />
+          <Routes>
+            <Route exact path="/" element={<Home/>} />
+            <Route path="/login" element={<Login/>} />
+            <Route path="/register" element={<Register/>} />
+            <Route path="/profile" element={<Profile/>} />
             {/* <Route exact path="/courses" component={Courses} />
             <Route path="/courses/:id" component={CourseDetail} />
             <Route path="/edit-course/:id" component={EditCourse} /> */}
-          </Switch>
+          </Routes>
         </div>
       </div>
     </Router>

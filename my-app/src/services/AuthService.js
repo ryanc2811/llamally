@@ -1,19 +1,18 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
+import {getAuth, createUserWithEmailAndPassword, updateProfile} from "firebase/auth"
+import {app} from "../utils/firebase"
 
+const auth=getAuth(app);
 class AuthService {
-  constructor() {
-    this.auth = firebase.auth();
-  }
+  
 
   async signup(email, password) {
     try {
-      const userCredential = await this.auth.createUserWithEmailAndPassword(
+      const userCredential = await createUserWithEmailAndPassword(auth,
         email,
         password
       );
       const { user } = userCredential;
-      await user.updateProfile({ displayName: email });
+      await updateProfile(user,{ displayName: email });
       return user;
     } catch (error) {
       console.error(error);
@@ -43,10 +42,16 @@ class AuthService {
       throw error;
     }
   }
-
+  onAuthStateChanged(callback) {
+    return this.auth.onAuthStateChanged(callback);
+  }
   getCurrentUser() {
     return this.auth.currentUser;
   }
+ 
 }
 
-export default AuthService;
+export const firebaseAuth=auth;
+
+
+export default new AuthService();

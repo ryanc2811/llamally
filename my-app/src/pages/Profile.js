@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { getUserById } from '../services/UserService';
+import UserService from '../services/UserService';
 
 function Profile() {
   const { currentUser } = useAuth();
@@ -8,7 +8,7 @@ function Profile() {
 
   useEffect(() => {
     const fetchUser = async () => {
-      const user = await getUserById(currentUser.uid);
+      const user = await UserService.getUser(currentUser.uid);
       setUser(user);
     };
     fetchUser();

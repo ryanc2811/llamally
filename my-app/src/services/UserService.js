@@ -1,14 +1,11 @@
-import firebase from 'firebase/app';
+import {db}from '../utils/firebase';
 import 'firebase/firestore';
 
 class UserService {
-  constructor() {
-    this.db = firebase.firestore();
-  }
 
   async getUser(userId) {
     try {
-      const userRef = this.db.collection('users').doc(userId);
+      const userRef = db.collection('users').doc(userId);
       const userDoc = await userRef.get();
       if (userDoc.exists) {
         return { id: userDoc.id, ...userDoc.data() };
@@ -23,7 +20,7 @@ class UserService {
 
   async updateUser(userId, userData) {
     try {
-      const userRef = this.db.collection('users').doc(userId);
+      const userRef = db.collection('users').doc(userId);
       await userRef.update(userData);
       return true;
     } catch (error) {
@@ -34,7 +31,7 @@ class UserService {
 
   async createUser(userData) {
     try {
-      const userRef = await this.db.collection('users').add(userData);
+      const userRef = await db.collection('users').add(userData);
       return userRef.id;
     } catch (error) {
       console.error(error);

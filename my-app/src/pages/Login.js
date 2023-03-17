@@ -1,18 +1,18 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import AuthService from '../services/AuthService';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
-  const history = useHistory();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
       await AuthService.login(email, password);
-      history.push('/');
+      navigate('/');
     } catch (error) {
       setErrorMessage(error.message);
     }

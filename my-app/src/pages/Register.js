@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useHistory} from 'react-router-dom';
+import { Link, useNavigate} from 'react-router-dom';
 import AuthService from '../services/AuthService';
 
 const Register = () => {
@@ -7,7 +7,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const history=useHistory();
+  const navigate=useNavigate();
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -17,9 +17,9 @@ const Register = () => {
     }
 
     try {
-      await AuthService.register(email, password);
+      await AuthService.signup(email, password);
       // Redirect to home page or login page after successful registration
-      history.push('/');
+      navigate('/');
     } catch (err) {
       setError(err.message);
     }
@@ -64,6 +64,7 @@ const Register = () => {
       </p>
     </div>
   );
+  
 };
 
 export default Register;

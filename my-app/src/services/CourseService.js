@@ -1,5 +1,5 @@
-import { db,firebase } from "../utils/firebase";
-import {query, where, getDocs} from "firebase/firestore"
+import { db,app } from "../utils/firebase";
+import {query, where, getDocs, doc, collection} from "firebase/firestore"
 class CourseService {
   async getAllCourses() {
     const coursesRef = db.collection("courses");
@@ -19,7 +19,7 @@ class CourseService {
     return courses;
   }
   async getPublishedCourses() {
-    const coursesRef = db.collection("courses");
+    const coursesRef = collection(db,"courses");
     const q=query(coursesRef,where ("published","==",true))
     const snapshot = await getDocs(q);
     const courses = [];
@@ -72,7 +72,7 @@ class CourseService {
   async addCourseSection(courseId, section) {
     const courseRef = db.collection("courses").doc(courseId);
     await courseRef.update({
-      sections: firebase.firestore.FieldValue.arrayUnion(section),
+      sections: app.firestore.FieldValue.arrayUnion(section),
     });
   }
 
@@ -86,11 +86,11 @@ class CourseService {
   async deleteCourseSection(courseId, sectionIndex) {
     const courseRef = db.collection("courses").doc(courseId);
     await courseRef.update({
-      sections: firebase.firestore.FieldValue.arrayRemove(
+      sections: app.firestore.FieldValue.arrayRemove(
         courseRef.sections[sectionIndex]
       ),
     });
   }
 }
 
-export default CourseService();
+export default new CourseService();
