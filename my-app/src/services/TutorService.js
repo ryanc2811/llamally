@@ -1,15 +1,27 @@
 import {db}from '../utils/firebase';
-import {setDoc, doc, getDoc, collection,addDoc} from "firebase/firestore";
+import {setDoc, doc, getDoc,getDocs, collection,addDoc, query,where} from "firebase/firestore";
 
 
 export const getTutor=  async (id)=> {
     const tutorRef = doc(db,'tutors',id);
     const tutorDoc = await getDoc(tutorRef)
     if (!tutorDoc.exists) {
-      throw new Error("Course not found");
+      throw new Error("Tutor not found");
     }
     const data = tutorDoc.data();
     return data;
+  }
+
+  export const getTutorByUser=  async (id)=> {
+    const q = query(collection(db,'tutors'),where("user_id","==",id));
+    
+    const tutorDocs = await getDocs(q);
+    let tutors=[];
+    tutorDocs.forEach((doc) => {
+        tutors.push(doc.data())
+      });
+
+    return tutors[0];
   }
 
   export const updateTutor = async (tutorId, tutorData) =>{
@@ -25,11 +37,15 @@ export const getTutor=  async (id)=> {
 
   export const createTutor=async(tutorData) =>{
     try {
-      const tutorRef = await setDoc(doc(db, "tutors",tutorData.uid),
-        tutorData
-      );
+      const tutorRef = await addDoc(collection(db, "tutors"), {
+        display_name: tutorData.display_name,
+        work_email: tutorData.work_email,
+        user_id:tutorData.user_id,
+        bio:tutorData.bio
+      });
       
-      return tutorRef?.id;
+      
+      return tutorRef.id;
     } catch (error) {
       console.error(error);
       throw error;

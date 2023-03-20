@@ -1,5 +1,5 @@
 import { db,app } from "../utils/firebase";
-import {query, where, getDocs,getDoc, doc, collection} from "firebase/firestore"
+import {query, where, getDocs,getDoc, doc, collection,addDoc} from "firebase/firestore"
 
   export const getAllCourses = async ()=> {
     const coursesRef = collection(db,"courses");
@@ -9,9 +9,9 @@ import {query, where, getDocs,getDoc, doc, collection} from "firebase/firestore"
       const data = doc.data();
       courses.push({
         id: doc.id,
-        name: data.name,
+        title: data.title,
         description: data.description,
-        tutorId: data.tutorId,
+        tutor_id: data.tutor_id,
         published: data.published,
         sections: data.sections,
       });
@@ -28,11 +28,10 @@ import {query, where, getDocs,getDoc, doc, collection} from "firebase/firestore"
       
       courses.push({
         id: doc.id,
-        name: data.name,
+        title: data.title,
         description: data.description,
-        tutorId: data.tutorId,
+        tutor_id: data.tutor_id,
         published: data.published,
-        sections: data.sections,
       });
     });
     return courses;
@@ -46,17 +45,24 @@ import {query, where, getDocs,getDoc, doc, collection} from "firebase/firestore"
     const data = courseDoc.data();
     return {
       id: courseDoc.id,
-      name: data.name,
+      title: data.title,
       description: data.description,
       tutor_id: data.tutor_id,
       published: data.published,
-      sections: data.sections,
     };
   }
 
   export const createCourse= async (course) =>{
-    const courseRef = await db.collection("courses").add(course);
-    return courseRef.id;
+    try {
+      const courseRef = await addDoc(doc(db, "courses"),
+        course
+      );
+      
+      return courseRef.id;
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
   }
 
   export const updateCourse= async (id, updatedCourse) =>{

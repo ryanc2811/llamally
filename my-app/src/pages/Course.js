@@ -23,8 +23,8 @@ function Course() {
 
   return (
     <div>
-      <h1>{course.name}</h1>
-      <h3>Tutor: {tutor.display_name}</h3>
+      <h1>{course.title}</h1>
+      <h3>Tutor: {tutor?.display_name}</h3>
       <p>Description: {course.description}</p>
       {currentUser && (
         <>

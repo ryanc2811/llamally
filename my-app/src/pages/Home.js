@@ -16,12 +16,12 @@ const Home = () => {
 
   return (
     <div>
-      <h1>Welcome to our e-learning platform</h1>
+      <h1>Welcome to Llamally</h1>
       <p>Here are some of our published courses:</p>
       {courses.map((course) => (
         <div key={course.id}>
           <Link to={`/courses/${course.id}`}>
-            <h3>{course.name}</h3>
+            <h3>{course.title}</h3>
           </Link>
           <p>{course.description}</p>
         </div>
