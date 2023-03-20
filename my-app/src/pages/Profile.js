@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import UserService from '../services/UserService';
 
+
 function Profile() {
   const { currentUser } = useAuth();
   const [user, setUser] = useState(null);

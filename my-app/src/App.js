@@ -11,7 +11,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Profile from './pages/Profile';
 //import Courses from './pages/Courses';
-//import CourseDetail from './pages/CourseDetail';
+import Course from './pages/Course';
 //import EditCourse from './pages/EditCourse';
 
 function App() {
@@ -25,9 +25,9 @@ function App() {
             <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register/>} />
             <Route path="/profile" element={<Profile/>} />
-            {/* <Route exact path="/courses" component={Courses} />
-            <Route path="/courses/:id" component={CourseDetail} />
-            <Route path="/edit-course/:id" component={EditCourse} /> */}
+            {/* <Route exact path="/courses" component={Courses} />*/
+            <Route path="/courses/:id" element={<Course/>} />
+            /*<Route path="/edit-course/:id" component={EditCourse} /> */}
           </Routes>
         </div>
       </div>

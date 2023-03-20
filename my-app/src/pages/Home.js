@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import CourseService from '../services/CourseService';
+import {getPublishedCourses} from '../services/CourseService';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
     const fetchCourses = async () => {
-      const publishedCourses = await CourseService.getPublishedCourses();
+      const publishedCourses = await getPublishedCourses();
       setCourses(publishedCourses);
     };
 

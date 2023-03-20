@@ -1,12 +1,11 @@
 import {db}from '../utils/firebase';
-import 'firebase/firestore';
-
+import {setDoc, doc, getDoc, collection,addDoc} from "firebase/firestore";
 class UserService {
 
   async getUser(userId) {
     try {
-      const userRef = db.collection('users').doc(userId);
-      const userDoc = await userRef.get();
+      const userRef = doc(db,'users',userId);
+      const userDoc = await getDoc(userRef);
       if (userDoc.exists) {
         return { id: userDoc.id, ...userDoc.data() };
       } else {
@@ -20,7 +19,7 @@ class UserService {
 
   async updateUser(userId, userData) {
     try {
-      const userRef = db.collection('users').doc(userId);
+      const userRef = doc(db,'users',userId);
       await userRef.update(userData);
       return true;
     } catch (error) {
@@ -31,8 +30,11 @@ class UserService {
 
   async createUser(userData) {
     try {
-      const userRef = await db.collection('users').add(userData);
-      return userRef.id;
+      const userRef = await setDoc(doc(db, "users",userData.uid),
+        userData
+      );
+      
+      return userRef?.id;
     } catch (error) {
       console.error(error);
       throw error;
@@ -40,4 +42,4 @@ class UserService {
   }
 }
 
-export default UserService;
+export default new UserService();

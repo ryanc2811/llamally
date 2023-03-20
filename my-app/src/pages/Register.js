@@ -3,6 +3,7 @@ import { Link, useNavigate} from 'react-router-dom';
 import AuthService from '../services/AuthService';
 
 const Register = () => {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -17,7 +18,7 @@ const Register = () => {
     }
 
     try {
-      await AuthService.signup(email, password);
+      await AuthService.signup(name,email, password);
       // Redirect to home page or login page after successful registration
       navigate('/');
     } catch (err) {
@@ -30,6 +31,15 @@ const Register = () => {
       <h1>Register</h1>
       {error && <p>{error}</p>}
       <form onSubmit={handleFormSubmit}>
+      <label>
+          Name:
+          <input
+            type="text"
+            value={name}
+            onChange={(event) => setName(event.target.value)}
+          />
+        </label>
+        <br />
         <label>
           Email:
           <input

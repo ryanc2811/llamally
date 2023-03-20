@@ -1,9 +1,9 @@
 import { db,app } from "../utils/firebase";
-import {query, where, getDocs, doc, collection} from "firebase/firestore"
-class CourseService {
-  async getAllCourses() {
-    const coursesRef = db.collection("courses");
-    const snapshot = await coursesRef.get();
+import {query, where, getDocs,getDoc, doc, collection} from "firebase/firestore"
+
+  export const getAllCourses = async ()=> {
+    const coursesRef = collection(db,"courses");
+    const snapshot = await getDocs(coursesRef);
     const courses = [];
     snapshot.forEach((doc) => {
       const data = doc.data();
@@ -18,7 +18,7 @@ class CourseService {
     });
     return courses;
   }
-  async getPublishedCourses() {
+  export const getPublishedCourses= async ()=> {
     const coursesRef = collection(db,"courses");
     const q=query(coursesRef,where ("published","==",true))
     const snapshot = await getDocs(q);
@@ -37,53 +37,53 @@ class CourseService {
     });
     return courses;
   }
-  async getCourseById(id) {
-    const courseRef = db.collection("courses").doc(id);
-    const doc = await courseRef.get();
-    if (!doc.exists) {
+  export const getCourseById= async(id)=> {
+    const courseRef = doc(db,'courses',id);
+    const courseDoc = await getDoc(courseRef)
+    if (!courseDoc.exists) {
       throw new Error("Course not found");
     }
-    const data = doc.data();
+    const data = courseDoc.data();
     return {
-      id: doc.id,
+      id: courseDoc.id,
       name: data.name,
       description: data.description,
-      tutorId: data.tutorId,
+      tutor_id: data.tutor_id,
       published: data.published,
       sections: data.sections,
     };
   }
 
-  async createCourse(course) {
+  export const createCourse= async (course) =>{
     const courseRef = await db.collection("courses").add(course);
     return courseRef.id;
   }
 
-  async updateCourse(id, updatedCourse) {
+  export const updateCourse= async (id, updatedCourse) =>{
     const courseRef = db.collection("courses").doc(id);
     await courseRef.update(updatedCourse);
   }
 
-  async deleteCourse(id) {
+  export const deleteCourse=async (id)=> {
     const courseRef = db.collection("courses").doc(id);
     await courseRef.delete();
   }
 
-  async addCourseSection(courseId, section) {
+  export const addCourseSection=async (courseId, section)=> {
     const courseRef = db.collection("courses").doc(courseId);
     await courseRef.update({
       sections: app.firestore.FieldValue.arrayUnion(section),
     });
   }
 
-  async updateCourseSection(courseId, sectionIndex, updatedSection) {
+  export const updateCourseSection=async(courseId, sectionIndex, updatedSection) =>{
     const courseRef = db.collection("courses").doc(courseId);
     await courseRef.update({
       [`sections.${sectionIndex}`]: updatedSection,
     });
   }
 
-  async deleteCourseSection(courseId, sectionIndex) {
+  export const deleteCourseSection= async(courseId, sectionIndex)=> {
     const courseRef = db.collection("courses").doc(courseId);
     await courseRef.update({
       sections: app.firestore.FieldValue.arrayRemove(
@@ -91,6 +91,3 @@ class CourseService {
       ),
     });
   }
-}
-
-export default new CourseService();
