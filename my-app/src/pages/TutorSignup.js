@@ -24,9 +24,9 @@ const TutorSignup = () => {
         set_display_name(user.name);
         set_work_email(user.email);
       } else {
-        //Navigate to tutor profile
+        //Navigate to tutor account
         console.log("Already a Tutor");
-        navigate('/profile');
+        navigate('/account');
 
       }
     };

@@ -32,8 +32,8 @@ function Navbar() {
   const handleLogout = async () => {
     try {
       await logout();
-      handleCloseUserMenu()
-      navigate("/");
+      navigate('/');
+      
     } catch (error) {
       console.log(error.message);
     }
@@ -181,10 +181,15 @@ function Navbar() {
                   onClose={handleCloseUserMenu}
                 >
 
-                  <MenuItem key={'Logout'} onClick={handleLogout}>
-                    <Typography textAlign="center">{'Logout'}</Typography>
+                  <MenuItem key={'Logout'} onClick={handleCloseUserMenu}>
+                    <Typography textAlign="center">Logout</Typography>
                   </MenuItem>
-
+                  <Link to={'/account'} style={{ textDecoration: 'none' ,color: 'black' }}>
+                  <MenuItem key={'Account'} onClick={handleCloseUserMenu}>
+                    
+                    <Typography textAlign="center">Account</Typography>
+                  </MenuItem>
+                  </Link>
                 </Menu>
               </Box>
             </>

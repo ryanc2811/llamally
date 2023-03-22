@@ -1,5 +1,5 @@
 import { db, app } from "../utils/firebase";
-import { query, where, getDocs, getDoc, doc, collection, addDoc } from "firebase/firestore"
+import { query, where, getDocs, getDoc, doc, collection, addDoc ,and} from "firebase/firestore"
 
 export const getAllCourses = async () => {
   const coursesRef = collection(db, "courses");
@@ -21,6 +21,24 @@ export const getAllCourses = async () => {
 export const getPublishedCourses = async () => {
   const coursesRef = collection(db, "courses");
   const q = query(coursesRef, where("published", "==", true))
+  const snapshot = await getDocs(q);
+  const courses = [];
+  snapshot.forEach((doc) => {
+    const data = doc.data();
+
+    courses.push({
+      id: doc.id,
+      title: data.title,
+      description: data.description,
+      tutor_id: data.tutor_id,
+      published: data.published,
+    });
+  });
+  return courses;
+}
+export const getTutorsCourses = async (tutor_id) => {
+  const coursesRef = collection(db, "courses");
+  const q = query(coursesRef, where("tutor_id", "==", tutor_id),where("published", "==", true))
   const snapshot = await getDocs(q);
   const courses = [];
   snapshot.forEach((doc) => {
