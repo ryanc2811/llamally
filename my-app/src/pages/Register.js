@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { Link, useNavigate} from 'react-router-dom';
-import AuthService from '../services/AuthService';
+import { Link, useNavigate } from 'react-router-dom';
+import { signup } from '../services/AuthService';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -8,7 +8,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   const handleFormSubmit = async (event) => {
     event.preventDefault();
 
@@ -18,7 +18,7 @@ const Register = () => {
     }
 
     try {
-      await AuthService.signup(name,email, password);
+      await signup(name, email, password);
       // Redirect to home page or login page after successful registration
       navigate('/');
     } catch (err) {
@@ -31,7 +31,7 @@ const Register = () => {
       <h1>Register</h1>
       {error && <p>{error}</p>}
       <form onSubmit={handleFormSubmit}>
-      <label>
+        <label>
           Name:
           <input
             type="text"
@@ -74,7 +74,7 @@ const Register = () => {
       </p>
     </div>
   );
-  
+
 };
 
 export default Register;

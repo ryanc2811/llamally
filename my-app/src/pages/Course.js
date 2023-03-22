@@ -6,19 +6,19 @@ import { getTutor } from "../services/TutorService";
 function Course() {
   const { currentUser } = useAuth();
   const [course, setCourse] = useState({});
-  const [tutor,setTutor]=useState({});
+  const [tutor, setTutor] = useState({});
   const { id } = useParams();
 
   useEffect(() => {
     async function fetchCourse() {
       const course = await getCourseById(id);
       setCourse(course);
-      const tutor=await getTutor(course.tutor_id);
+      const tutor = await getTutor(course.tutor_id);
       setTutor(tutor);
     }
 
     fetchCourse();
- 
+
   }, [id]);
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import {getPublishedCourses} from '../services/CourseService';
+import { getPublishedCourses } from '../services/CourseService';
 
 const Home = () => {
   const [courses, setCourses] = useState([]);

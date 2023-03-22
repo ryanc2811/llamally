@@ -1,12 +1,11 @@
 import React, { createContext, useState, useEffect, useContext } from "react";
-import AuthService from "../services/AuthService";
-import {firebaseAuth} from "../services/AuthService";
+import { firebaseAuth, login as serviceLogin, logout as serviceLogout, signup as serviceSignup, resetPassword as serviceResetPassword } from "../services/AuthService";
 export const AuthContext = createContext();
 
-export const useAuth=()=>{
-    const auth = useContext(AuthContext);
-    
-    return auth;
+export const useAuth = () => {
+  const auth = useContext(AuthContext);
+
+  return auth;
 };
 export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
@@ -19,20 +18,21 @@ export const AuthProvider = ({ children }) => {
     });
   }, []);
 
+
   const login = async (email, password) => {
-    await AuthService.login(email, password);
+    await serviceLogin(email, password);
   };
 
   const logout = async () => {
-    await AuthService.logout();
+    await serviceLogout();
   };
 
   const signup = async (email, password) => {
-    await AuthService.signup(email, password);
+    await serviceSignup(email, password);
   };
 
   const resetPassword = async (email) => {
-    await AuthService.resetPassword(email);
+    await serviceResetPassword(email);
   };
 
   const updateEmail = async (email) => {
@@ -51,6 +51,7 @@ export const AuthProvider = ({ children }) => {
     resetPassword,
     updateEmail,
     updatePassword,
+    useAuth
   };
 
   return (

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthService from '../services/AuthService';
+import { login } from '../services/AuthService';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -11,11 +11,13 @@ const Login = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      await AuthService.login(email, password);
+      await login(email, password);
       navigate('/');
     } catch (error) {
       setErrorMessage(error.message);
     }
+
+
   };
 
   return (
@@ -41,6 +43,8 @@ const Login = () => {
         </label>
         <button type="submit">Login</button>
       </form>
+      <button
+        onClick={(event) => navigate('/forgotpassword')}>Forgot Password</button>
     </div>
   );
 };
