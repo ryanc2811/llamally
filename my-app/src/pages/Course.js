@@ -28,7 +28,7 @@ function Course() {
       <p>Description: {course.description}</p>
       {currentUser && (
         <>
-          {currentUser.uid === tutor.user_id && (
+          {currentUser?.uid === tutor?.user_id && (
             <button>Edit Course</button>
           )}
           <button>Enroll in Course</button>

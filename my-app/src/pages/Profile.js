@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import UserService from '../services/UserService';
 import UserSidebar from '../components/UserSidebar';
+import { removeTutor } from '../services/TutorService';
 
 function Profile() {
   const { currentUser } = useAuth();
@@ -18,7 +19,9 @@ function Profile() {
     fetchUser();
   }, [currentUser]);
   const handleDeleteAccount = async () => {
+    await removeTutor(currentUser.uid)
     await UserService.removeUser(currentUser);
+
     navigate('/');
   }
   return (

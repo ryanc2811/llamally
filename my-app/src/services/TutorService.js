@@ -1,5 +1,5 @@
 import { db } from '../utils/firebase';
-import { setDoc, doc, getDoc, getDocs, collection, addDoc, query, where } from "firebase/firestore";
+import { setDoc, doc, getDoc, getDocs, collection, addDoc, query, where, deleteDoc } from "firebase/firestore";
 
 
 export const getTutor = async (id) => {
@@ -18,12 +18,28 @@ export const getTutorByUser = async (id) => {
   const tutorDocs = await getDocs(q);
   let tutors = [];
   tutorDocs.forEach((doc) => {
-    tutors.push(doc.data())
+    tutors.push({ id: doc.id, ...doc.data() })
   });
 
   return tutors[0];
 }
+export const removeTutor = async (user_id) => {
+  try {
 
+    const tutor = await getTutorByUser(user_id);
+
+    if (tutor) {
+      await deleteDoc(doc(db, "tutors", tutor.id));
+
+      return true;
+    }
+
+    return false;
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
 export const updateTutor = async (tutorId, tutorData) => {
   try {
     const tutorRef = doc(db, 'tutors', tutorId);

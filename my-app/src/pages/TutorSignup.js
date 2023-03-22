@@ -17,23 +17,26 @@ const TutorSignup = () => {
     const fetchUser = async () => {
       const user = await UserService.getUser(currentUser.uid);
       setUser(user);
-      if (!user) {
-        navigate('/login');
+
+      const tutor = await getTutorByUser(user.id);
+      console.log(tutor);
+      if (!tutor) {
+        set_display_name(user.name);
+        set_work_email(user.email);
       } else {
-        const tutor = await getTutorByUser(user.id);
-        console.log(tutor);
-        if (!tutor) {
-          set_display_name(user.name);
-          set_work_email(user.email);
-        } else {
-          //Navigate to tutor profile
-          console.log("Already a Tutor");
-          navigate('/profile');
-        }
+        //Navigate to tutor profile
+        console.log("Already a Tutor");
+        navigate('/profile');
+
       }
     };
+    if (!currentUser) {
 
-    fetchUser();
+      navigate('/login');
+    } else {
+      fetchUser();
+    }
+
 
   }, [currentUser]);
 

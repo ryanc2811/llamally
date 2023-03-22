@@ -16,7 +16,11 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 
-const pages = ['Courses', 'Become a partner'];
+const styles = {
+  appBar: {
+    zIndex: 1300,
+  }
+}
 
 
 function Navbar() {
@@ -50,7 +54,7 @@ function Navbar() {
   };
 
   return (
-    <AppBar position="static">
+    <AppBar position="fixed" style={styles.appBar}>
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
@@ -104,11 +108,14 @@ function Navbar() {
                 display: { xs: 'block', md: 'none' },
               }}
             >
-              {pages.map((page) => (
-                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                  <Typography textAlign="center">{page}</Typography>
-                </MenuItem>
-              ))}
+
+              <MenuItem key={'Courses'} href={'/courses'} onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">{'Courses'}</Typography>
+              </MenuItem>
+              <MenuItem key={'Become a partner'} href={'/tutorsignup'} onClick={handleCloseNavMenu}>
+                <Typography textAlign="center">{'Become a partner'}</Typography>
+              </MenuItem>
+
             </Menu>
           </Box>
           <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -131,15 +138,23 @@ function Navbar() {
             LOGO
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {pages.map((page) => (
-              <Button
-                key={page}
-                onClick={handleCloseNavMenu}
-                sx={{ my: 2, color: 'white', display: 'block' }}
-              >
-                {page}
-              </Button>
-            ))}
+
+            <Button
+              key={'Courses'}
+              href={'/courses'}
+              onClick={handleCloseNavMenu}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Courses
+            </Button>
+            <Button
+              key={'Become a partner'}
+              onClick={handleCloseNavMenu}
+              href={'/tutorsignup'}
+              sx={{ my: 2, color: 'white', display: 'block' }}
+            >
+              Become a partner
+            </Button>
           </Box>
           {currentUser ? (
             <>
@@ -187,7 +202,7 @@ function Navbar() {
                 </Button>
                 <Button
                   key={'Signup'}
-                  href={'register'}
+                  href={'/register'}
                   sx={{ my: 2, color: 'white', display: 'block' }}
                 >
                   Signup
